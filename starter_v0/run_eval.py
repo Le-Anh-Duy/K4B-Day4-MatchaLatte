@@ -271,6 +271,7 @@ def main() -> None:
     parser.add_argument("--tools", type=Path, default=ARTIFACTS_DIR / "tools.yaml")
     parser.add_argument("--eval-cases", type=Path, default=DATA_DIR / "eval_base.json")
     parser.add_argument("--runs-dir", type=Path, default=ROOT / "runs")
+    parser.add_argument("--request-interval", type=float, default=0.0, help="Seconds to wait before each case, to stay under a per-minute request limit (0 = no pacing).")
     parser.add_argument("--pause-every", type=int, default=0, help="Pause after this many cases so a per-minute rate limit can reset (0 = never).")
     parser.add_argument("--pause-seconds", type=int, default=90)
     args = parser.parse_args()
@@ -288,11 +289,46 @@ def main() -> None:
     validate_expected_tools(cases, tool_declarations, args.eval_cases)
     openai_tools = to_openai_tools(tool_declarations)
 
+    now = datetime.now()
+    run_id = "_".join([
+        safe_slug(args.version),
+        safe_slug(args.phase),
+        safe_slug(args.suite),
+        safe_slug(args.provider),
+        now.strftime("%Y%m%dT%H%M%S%f"),
+    ])
+    args.runs_dir.mkdir(parents=True, exist_ok=True)
+    out_path = args.runs_dir / f"{run_id}.json"
+
+    def save(results: list[dict[str, Any]]) -> dict[str, Any]:
+        """Rewrite the run file after every case so a killed run still has its results."""
+        summary = summarize(results)
+        payload = {
+            "run_id": run_id,
+            "version": args.version,
+            **artifact_version_dict(artifact_version),
+            "phase": args.phase,
+            "suite": args.suite,
+            "provider": args.provider,
+            "model": selected_model,
+            "system_prompt": str(args.system_prompt),
+            "tools": str(args.tools),
+            "eval_cases": str(args.eval_cases),
+            **dataset_info,
+            "generated_at": now.isoformat(timespec="seconds"),
+            "summary": summary,
+            "results": results,
+        }
+        out_path.write_text(json.dumps(payload, ensure_ascii=False, indent=2, default=str), encoding="utf-8")
+        return summary
+
     results: list[dict[str, Any]] = []
     for index, case in enumerate(cases):
         if args.pause_every and index and index % args.pause_every == 0:
             print(f"Pausing {args.pause_seconds}s for the rate limit window to reset...", flush=True)
             time.sleep(args.pause_seconds)
+        if args.request_interval and index:
+            time.sleep(args.request_interval)
         print(f"Running {case['id']}...", flush=True)
         agent = HelpdeskAgent(provider, system_prompt=system_prompt, tools=openai_tools, model=args.model)
         try:
@@ -315,6 +351,11 @@ def main() -> None:
                 "routing_correct": False,
                 "args_correct": False,
             }
+        print(
+            f"  -> {'PASS' if result['passed'] else 'FAIL'}"
+            f"{'' if result['passed'] else ' ' + str(result.get('failure_type'))}",
+            flush=True,
+        )
         results.append({
             "id": case["id"],
             "phase": case["phase"],
@@ -327,38 +368,9 @@ def main() -> None:
             "result": result,
             "tool_results": tool_results,
         })
+        save(results)
 
-    summary = summarize(results)
-    args.runs_dir.mkdir(parents=True, exist_ok=True)
-    now = datetime.now()
-    generated_at = now.isoformat(timespec="seconds")
-    timestamp = now.strftime("%Y%m%dT%H%M%S%f")
-    run_id = "_".join([
-        safe_slug(args.version),
-        safe_slug(args.phase),
-        safe_slug(args.suite),
-        safe_slug(args.provider),
-        timestamp,
-    ])
-    payload = {
-        "run_id": run_id,
-        "version": args.version,
-        **artifact_version_dict(artifact_version),
-        "phase": args.phase,
-        "suite": args.suite,
-        "provider": args.provider,
-        "model": selected_model,
-        "system_prompt": str(args.system_prompt),
-        "tools": str(args.tools),
-        "eval_cases": str(args.eval_cases),
-        **dataset_info,
-        "generated_at": generated_at,
-        "summary": summary,
-        "results": results,
-    }
-
-    out_path = args.runs_dir / f"{run_id}.json"
-    out_path.write_text(json.dumps(payload, ensure_ascii=False, indent=2, default=str), encoding="utf-8")
+    summary = save(results)
     print_table(results, summary)
     print(f"\nArtifact version: {artifact_version.artifact_version}")
     print(f"\nSaved: {out_path}")
