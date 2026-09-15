@@ -116,6 +116,9 @@ def run_model_tool_loop(
             event = execute_tool_call(call)
             round_record["tool_results"].append(event)
             all_tool_events.append(event)
+            result_value = event.get("result", {})
+            label = "error" if isinstance(result_value, dict) and result_value.get("error") else "result"
+            print(f"[{label}] {json_text(result_value, max_chars=800)}")
 
             # Detect the clarification/pause tool by its output flag (rename-proof),
             # not by a hard-coded tool name.
