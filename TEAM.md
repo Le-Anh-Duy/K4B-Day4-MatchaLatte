@@ -4,17 +4,20 @@
 
 ## Thông tin bài nộp
 
-- Tên nhóm:
-- Người đại diện / MSSV:
+- Tên nhóm: MatchaLatte
+- Người đại diện / MSSV: Lê Anh Duy / 2A202602723
 - Tên repo: `K4-L3-DAY04-HoVaTen-MSSV-PromptEngineeringToolCalling`
-- URL repo, nhánh nộp, commit chốt:
+- URL repo, nhánh nộp, commit chốt: https://github.com/Le-Anh-Duy/K4-L3-DAY04-LeAnhDuy-2A202602723-PromptEngineeringToolCalling, main
 - Deadline áp dụng và link thông báo đổi hạn nếu có:
 
 ## Thành viên
 
 | Họ và tên | MSSV | GitHub | Vai trò và công việc | File/commit/PR |
 |---|---|---|---|---|
-| | | | | |
+| Lê Anh Duy| 2A202602723 | Nhóm trưởng | | |
+| Lê Quang Thành | 2A202602647 |  | | |
+| Nguyễn Thị Phương Duyên | 2A202603001 |  | | |
+| Đào Trọng Khang| 2A202602974 |  | | |
 
 ## Nhận xét chung
 
