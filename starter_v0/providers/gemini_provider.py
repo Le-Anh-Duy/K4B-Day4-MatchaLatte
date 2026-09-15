@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import json
 import os
+import re
+import sys
 import time
 from typing import Any
 
@@ -107,7 +109,7 @@ class GeminiProvider:
             config_kwargs["tools"] = [types.Tool(function_declarations=declarations)]
 
         client = genai.Client(api_key=api_key)
-        # ponytail: fixed backoff for free-tier 429s; honour the API retryDelay if runs get too slow.
+        # ponytail: retry 429s using the API's own retryDelay, falling back to fixed backoff.
         for attempt in range(5):
             try:
                 resp = client.models.generate_content(
@@ -117,9 +119,13 @@ class GeminiProvider:
                 )
                 break
             except Exception as exc:
-                if attempt == 4 or not ("429" in str(exc) or "RESOURCE_EXHAUSTED" in str(exc)):
+                message = str(exc)
+                if attempt == 4 or not ("429" in message or "RESOURCE_EXHAUSTED" in message):
                     raise
-                time.sleep(15 * (attempt + 1))
+                suggested = re.search(r"retryDelay['\"]?[:=]\s*['\"]?(\d+)", message)
+                delay = int(suggested.group(1)) + 1 if suggested else 15 * (attempt + 1)
+                print(f"[rate-limit] retry {attempt + 1}/4 after {delay}s", file=sys.stderr, flush=True)
+                time.sleep(delay)
 
         text_parts: list[str] = []
         calls: list[ToolCall] = []

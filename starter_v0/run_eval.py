@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import json
 import re
+import time
 from datetime import datetime
 from pathlib import Path
 from typing import Any
@@ -270,6 +271,8 @@ def main() -> None:
     parser.add_argument("--tools", type=Path, default=ARTIFACTS_DIR / "tools.yaml")
     parser.add_argument("--eval-cases", type=Path, default=DATA_DIR / "eval_base.json")
     parser.add_argument("--runs-dir", type=Path, default=ROOT / "runs")
+    parser.add_argument("--pause-every", type=int, default=0, help="Pause after this many cases so a per-minute rate limit can reset (0 = never).")
+    parser.add_argument("--pause-seconds", type=int, default=90)
     args = parser.parse_args()
 
     system_prompt = args.system_prompt.read_text(encoding="utf-8")
@@ -286,7 +289,10 @@ def main() -> None:
     openai_tools = to_openai_tools(tool_declarations)
 
     results: list[dict[str, Any]] = []
-    for case in cases:
+    for index, case in enumerate(cases):
+        if args.pause_every and index and index % args.pause_every == 0:
+            print(f"Pausing {args.pause_seconds}s for the rate limit window to reset...", flush=True)
+            time.sleep(args.pause_seconds)
         print(f"Running {case['id']}...", flush=True)
         agent = HelpdeskAgent(provider, system_prompt=system_prompt, tools=openai_tools, model=args.model)
         try:

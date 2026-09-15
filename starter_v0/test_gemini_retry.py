@@ -43,8 +43,12 @@ def install_fake_genai(errors: list[Exception]) -> dict[str, int]:
     return seen
 
 
-def rate_limit_error() -> Exception:
-    return RuntimeError("429 RESOURCE_EXHAUSTED. Resource has been exhausted (e.g. check quota).")
+def rate_limit_error(retry_delay: int | None = None) -> Exception:
+    detail = f", 'retryDelay': '{retry_delay}s'" if retry_delay is not None else ""
+    return RuntimeError(
+        "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, "
+        f"'message': 'Resource has been exhausted (e.g. check quota).'{detail}}}}}"
+    )
 
 
 def complete(provider: GeminiProvider):
@@ -53,7 +57,8 @@ def complete(provider: GeminiProvider):
 
 def main() -> None:
     os.environ.setdefault("GEMINI_API_KEY", "test-key")
-    gemini_provider.time = types.SimpleNamespace(sleep=lambda _s: None)  # keep the check instant
+    slept: list[int] = []
+    gemini_provider.time = types.SimpleNamespace(sleep=slept.append)  # keep the check instant
     provider = GeminiProvider()
 
     seen = install_fake_genai([rate_limit_error(), rate_limit_error()])
@@ -78,7 +83,12 @@ def main() -> None:
         raise AssertionError("persistent 429 must eventually raise")
     assert seen["calls"] == 5, f"expected 5 attempts before giving up, got {seen['calls']}"
 
-    print("ok: retries 429, propagates other errors, gives up after 5 attempts")
+    slept.clear()
+    install_fake_genai([rate_limit_error(retry_delay=7)])
+    complete(provider)
+    assert slept == [8], f"expected the API retryDelay of 7s plus 1s margin, slept {slept}"
+
+    print("ok: retries 429, honours retryDelay, propagates other errors, gives up after 5 attempts")
 
 
 if __name__ == "__main__":
