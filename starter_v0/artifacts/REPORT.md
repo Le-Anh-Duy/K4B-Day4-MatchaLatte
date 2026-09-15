@@ -50,7 +50,7 @@ total_cases`, và tool result error đã được review thủ công.
 
 | Version | Prompt/tool change | Hypothesis | Metric | Before | After | Run file |
 |---|---|---|---|---:|---:|---|
-| v0 | baseline |  |  |  |  |  |
+| v0 | Baseline prompt + baseline tools | Baseline chưa ép model thực hiện tool call đủ mạnh; model có xu hướng mô tả action bằng text thay vì thực sự gọi tool | Case accuracy |73.33% (22/30)  |  | v0_B_base_gemini_20260915T192022433394 |
 | v1 |  |  |  |  |  |  |
 | v2 |  |  |  |  |  |  |
 | v3 |  |  |  |  |  |  |
