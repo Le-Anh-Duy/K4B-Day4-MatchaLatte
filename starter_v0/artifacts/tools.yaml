@@ -42,8 +42,8 @@ tools:
       type: object
       properties:
         asset_id: {type: string, description: "Mã tài sản"}
-        check: {type: string, enum: [all, network, vpn, security, hardware, software], default: "all", description: "Nhóm kiểm tra"}
-      required: [asset_id]
+        check: {type: string, enum: [all, network, vpn, security, hardware, software], default: "all", description: "Nhóm kiểm tra. Luôn nêu rõ giá trị: dùng all khi yêu cầu chung chung hoặc cần chẩn đoán toàn bộ máy; chỉ chọn một nhóm hẹp khi người dùng nói rõ phần cần kiểm tra."}
+      required: [asset_id, check]
 
   - name: lookup_user
     description: "Tra cứu người dùng trong danh bạ hỗ trợ."

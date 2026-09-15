@@ -95,7 +95,7 @@ Thay `openrouter` bằng `openai`, `anthropic` hoặc `gemini` khi dùng provide
 python ui_server.py
 ```
 
-`start_ui.bat` dùng artifact `v3` và provider Gemini với model mặc định `gemini-3.5-flash-lite` từ `GEMINI_API_KEY` trong `.env`. Có thể chạy tương đương bằng `python ui_server.py --provider gemini --version v3`, hoặc `python app.py --provider gemini --version v3`. Sau đó mở `http://127.0.0.1:8011`. UI theme sáng hiển thị tool, JSON input, result/error và artifact version; transcript thật được lưu trong `starter_v0/transcripts/`. Nếu Gemini lỗi, lượt chat dừng và ghi `provider_error`; ứng dụng không tự chuyển sang local demo.
+`start_ui.bat` dùng artifact `v6` và provider Gemini với model mặc định `gemini-3.5-flash-lite` từ `GEMINI_API_KEY` trong `.env`. Có thể chạy tương đương bằng `python ui_server.py --provider gemini --version v6`, hoặc `python app.py --provider gemini --version v6`. Sau đó mở `http://127.0.0.1:8011`. UI theme sáng hiển thị tool, JSON input, result/error và artifact version; transcript thật được lưu trong `starter_v0/transcripts/`. Nếu Gemini lỗi, lượt chat dừng và ghi `provider_error`; ứng dụng không tự chuyển sang local demo.
 
 Trong UI, gõ `/exit` (hoặc `/quit`) để kết thúc phiên. Server đánh dấu transcript là `closed`, ghi `ended_at` và khóa ô nhập; dùng nút **Cuộc trò chuyện mới** để bắt đầu phiên khác.
 
