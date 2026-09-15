@@ -7,7 +7,7 @@
 - Tên nhóm: MatchaLatte
 - Người đại diện / MSSV: Lê Anh Duy / 2A202602723
 - Tên repo: `K4-L3-DAY04-HoVaTen-MSSV-PromptEngineeringToolCalling`
-- URL repo, nhánh nộp, commit chốt: https://github.com/Le-Anh-Duy/K4-L3-DAY04-LeAnhDuy-2A202602723-PromptEngineeringToolCalling, main
+- URL repo, nhánh nộp, commit chốt: https://github.com/Le-Anh-Duy/K4-L3-DAY04-LeAnhDuy-2A202602723-PromptEngineeringToolCalling (repo đã được lab coach đổi tên thành `K4B-Day4-MatchaLatte`, URL cũ vẫn redirect), nhánh `main`, commit chốt `ccd2ec2` — commit cuối cùng chứa toàn bộ bài làm; commit sau đó chỉ ghi lại dòng này.
 - Deadline áp dụng và link thông báo đổi hạn nếu có:
 
 ## Thành viên
