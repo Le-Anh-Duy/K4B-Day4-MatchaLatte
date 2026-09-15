@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import os
+import time
 from typing import Any
 
 from providers.base import ModelResponse, ToolCall
@@ -106,11 +107,19 @@ class GeminiProvider:
             config_kwargs["tools"] = [types.Tool(function_declarations=declarations)]
 
         client = genai.Client(api_key=api_key)
-        resp = client.models.generate_content(
-            model=model or self.default_model,
-            contents=contents,
-            config=types.GenerateContentConfig(**config_kwargs),
-        )
+        # ponytail: fixed backoff for free-tier 429s; honour the API retryDelay if runs get too slow.
+        for attempt in range(5):
+            try:
+                resp = client.models.generate_content(
+                    model=model or self.default_model,
+                    contents=contents,
+                    config=types.GenerateContentConfig(**config_kwargs),
+                )
+                break
+            except Exception as exc:
+                if attempt == 4 or not ("429" in str(exc) or "RESOURCE_EXHAUSTED" in str(exc)):
+                    raise
+                time.sleep(15 * (attempt + 1))
 
         text_parts: list[str] = []
         calls: list[ToolCall] = []
