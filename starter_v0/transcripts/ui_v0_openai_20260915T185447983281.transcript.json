@@ -1,0 +1,29 @@
+{
+  "transcript_id": "ui_v0_openai_20260915T185447983281",
+  "source": "web_ui",
+  "version": "v0",
+  "artifact_version": "v0+p27467914bc4d+td4848549884e",
+  "prompt_hash": "27467914bc4d93574eb1a418b77247c51682e04401c78fb4445c22b9019185a0",
+  "tools_hash": "d4848549884eb9613313a2a8dec5faca4e8299842790ac2d42a04195b4da3198",
+  "provider": "openai",
+  "model": "gpt-4o-mini",
+  "max_tool_rounds": 4,
+  "system_prompt": "D:\\LApAI\\K4B-Day4-MatchaLatte\\starter_v0\\artifacts\\system_prompt.md",
+  "tools": "D:\\LApAI\\K4B-Day4-MatchaLatte\\starter_v0\\artifacts\\tools.yaml",
+  "history_window": 5,
+  "created_at": "2026-09-15T18:54:47",
+  "updated_at": "2026-09-15T18:54:51",
+  "turns": [
+    {
+      "turn_index": 1,
+      "started_at": "2026-09-15T18:54:47",
+      "user": "Kiểm tra giúp tôi trạng thái VPN hiện tại.",
+      "status": "provider_error",
+      "assistant_text": "Không thể kết nối tới mô hình. Hãy kiểm tra provider và API key rồi thử lại.",
+      "rounds": [],
+      "tool_events": [],
+      "error": "RateLimitError: Error code: 429 - {'error': {'message': 'You have no credits remaining. Add credits to continue using the API at https://platform.openai.com/settings/organization/billing/.', 'type': 'insufficient_quota', 'param': None, 'code': 'credit_balance_exhausted'}}",
+      "ended_at": "2026-09-15T18:54:51"
+    }
+  ]
+}
