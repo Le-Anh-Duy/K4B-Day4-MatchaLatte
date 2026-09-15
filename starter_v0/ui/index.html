@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Giao diện chat IT Helpdesk có theo dõi tool call và phiên bản artifact.">
+  <title>IT Helpdesk · Matcha</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <main class="shell">
+    <aside class="sidebar">
+      <div class="brand"><div class="brand-mark" aria-hidden="true">M</div><div><strong>Matcha Desk</strong><span>IT Support Agent</span></div></div>
+      <button class="new-chat" id="newChat" type="button"><span>＋</span> Cuộc trò chuyện mới</button>
+      <section class="status-card">
+        <div class="eyebrow">Trạng thái hệ thống</div>
+        <div class="status-line"><span class="pulse"></span><strong>Sẵn sàng hỗ trợ</strong></div>
+        <dl>
+          <div><dt>Provider</dt><dd id="provider">—</dd></div>
+          <div><dt>Model</dt><dd id="model">—</dd></div>
+          <div><dt>Tool rounds</dt><dd id="rounds">—</dd></div>
+        </dl>
+      </section>
+      <section class="privacy-note"><span aria-hidden="true">⌁</span><p><strong>Dữ liệu giả lập</strong><br>Không gửi mật khẩu, OTP hoặc API key.</p></section>
+    </aside>
+    <section class="workspace">
+      <header class="topbar">
+        <div><span class="eyebrow">Workspace / IT Helpdesk</span><h1>Trợ lý hỗ trợ nội bộ</h1></div>
+        <div class="version-chip"><span>Artifact</span><code id="version">đang tải…</code></div>
+      </header>
+      <div class="conversation" id="conversation" aria-live="polite">
+        <section class="welcome" id="welcome">
+          <div class="welcome-icon">✦</div><p class="eyebrow">Xin chào</p>
+          <h2>Bạn đang gặp vấn đề IT gì?</h2>
+          <p>Mô tả sự cố, mình sẽ kiểm tra dữ liệu nội bộ và hiển thị từng bước xử lý minh bạch.</p>
+          <div class="suggestions">
+            <button type="button" data-prompt="Kiểm tra giúp tôi trạng thái VPN hiện tại."><span>⌁</span><b>Kiểm tra VPN</b><small>Xem tình trạng dịch vụ</small></button>
+            <button type="button" data-prompt="Hướng dẫn tôi xử lý Wi-Fi trên Windows."><span>⌘</span><b>Lỗi Wi-Fi</b><small>Tìm hướng dẫn nội bộ</small></button>
+            <button type="button" data-prompt="Tôi cần hỗ trợ kiểm tra thiết bị của mình."><span>▣</span><b>Thiết bị</b><small>Kiểm tra thông tin máy</small></button>
+          </div>
+        </section>
+      </div>
+      <footer class="composer-wrap">
+        <form class="composer" id="chatForm"><textarea id="messageInput" rows="1" maxlength="4000" placeholder="Nhập yêu cầu hỗ trợ…" aria-label="Nội dung yêu cầu"></textarea><button id="sendButton" type="submit" aria-label="Gửi yêu cầu">↑</button></form>
+        <p>Enter để gửi · Shift + Enter để xuống dòng · Gõ /exit để kết thúc và lưu phiên chat</p>
+      </footer>
+    </section>
+  </main>
+  <script src="/app.js" defer></script>
+</body>
+</html>

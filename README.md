@@ -87,6 +87,18 @@ Thay `openrouter` bằng `openai`, `anthropic` hoặc `gemini` khi dùng provide
 | [RULES.md](RULES.md) | Dùng AI, làm nhóm, deadline và bảo mật |
 | [TEAM.md](TEAM.md) | Ghi thành viên, phần việc và INDIVIDUAL |
 
+### Web UI Helpdesk
+
+Đảm bảo đã tạo `starter_v0/.env` và điền key của một provider. Sau đó nhấp đúp `starter_v0/start_ui.bat`, hoặc chạy từ thư mục `starter_v0`:
+
+```powershell
+python ui_server.py
+```
+
+`start_ui.bat` dùng artifact `v3` và provider Gemini với model mặc định `gemini-3.5-flash-lite` từ `GEMINI_API_KEY` trong `.env`. Có thể chạy tương đương bằng `python ui_server.py --provider gemini --version v3`, hoặc `python app.py --provider gemini --version v3`. Sau đó mở `http://127.0.0.1:8011`. UI theme sáng hiển thị tool, JSON input, result/error và artifact version; transcript thật được lưu trong `starter_v0/transcripts/`. Nếu Gemini lỗi, lượt chat dừng và ghi `provider_error`; ứng dụng không tự chuyển sang local demo.
+
+Trong UI, gõ `/exit` (hoặc `/quit`) để kết thúc phiên. Server đánh dấu transcript là `closed`, ghi `ended_at` và khóa ô nhập; dùng nút **Cuộc trò chuyện mới** để bắt đầu phiên khác.
+
 ## Thời gian
 
 Buổi học: **17:30–21:00**. 17:30–17:40 giới thiệu, 17:40–17:50 Kahoot, 17:50–20:25 làm nhóm, 20:25–21:00 demo. Mốc kiểm tra tại lớp là 20:25; xem [CHECKPOINTS.md](CHECKPOINTS.md).

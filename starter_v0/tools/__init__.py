@@ -7,6 +7,7 @@ import yaml
 
 from .clarify.tool import ask_user
 from .check_service_status.tool import check_service_status
+from .check_software_license.tool import check_software_license
 from .create_ticket.tool import create_ticket
 from .format_incident_report.tool import format_incident_report
 from .inspect_device.tool import inspect_device
@@ -14,6 +15,7 @@ from .lookup_user.tool import lookup_user
 from .policy.tool import search_company_policy
 from .search_kb.tool import search_kb
 from .search_device_info.tool import search_device_info
+from .unlock_user_account.tool import unlock_user_account
 
 
 # These names are part of the fixed evaluation contract. Keep built-in names
@@ -25,11 +27,13 @@ TOOL_FUNCTIONS = {
     "search_kb": search_kb,
     "search_device_info": search_device_info,
     "check_service_status": check_service_status,
+    "check_software_license": check_software_license,
     "inspect_device": inspect_device,
     "lookup_user": lookup_user,
     "format_incident_report": format_incident_report,
     "policy": search_company_policy,
     "create_ticket": create_ticket,
+    "unlock_user_account": unlock_user_account,
 }
 
 

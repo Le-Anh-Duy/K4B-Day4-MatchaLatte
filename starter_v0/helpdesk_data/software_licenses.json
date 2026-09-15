@@ -1,0 +1,22 @@
+{
+  "snapshot_at": "2026-09-15T09:00:00+07:00",
+  "catalog": [
+    {"software": "Microsoft 365", "aliases": ["office", "m365"], "total_seats": 100, "assigned_seats": 82, "expires_at": "2027-06-30"},
+    {"software": "Adobe Creative Cloud", "aliases": ["adobe", "creative cloud"], "total_seats": 20, "assigned_seats": 19, "expires_at": "2027-03-31"},
+    {"software": "Figma Professional", "aliases": ["figma", "figma pro"], "total_seats": 15, "assigned_seats": 13, "expires_at": "2027-01-31"},
+    {"software": "Zoom Workplace", "aliases": ["zoom", "zoom pro"], "total_seats": 80, "assigned_seats": 71, "expires_at": "2027-05-31"}
+  ],
+  "assignments": [
+    {"employee_id": "EMP-1001", "software": "Microsoft 365", "status": "active"},
+    {"employee_id": "EMP-1002", "software": "Microsoft 365", "status": "active"},
+    {"employee_id": "EMP-1003", "software": "Microsoft 365", "status": "active"},
+    {"employee_id": "EMP-1004", "software": "Microsoft 365", "status": "active"},
+    {"employee_id": "EMP-1004", "software": "Figma Professional", "status": "active"},
+    {"employee_id": "EMP-1005", "software": "Microsoft 365", "status": "active"},
+    {"employee_id": "EMP-1005", "software": "Adobe Creative Cloud", "status": "expired"},
+    {"employee_id": "EMP-1007", "software": "Adobe Creative Cloud", "status": "active"},
+    {"employee_id": "EMP-1007", "software": "Figma Professional", "status": "active"},
+    {"employee_id": "EMP-1008", "software": "Microsoft 365", "status": "active"},
+    {"employee_id": "EMP-1009", "software": "Zoom Workplace", "status": "active"}
+  ]
+}
