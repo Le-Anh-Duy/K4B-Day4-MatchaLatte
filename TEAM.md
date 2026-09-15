@@ -24,7 +24,20 @@
 - Kết quả và bằng chứng:
 - Thay đổi hiệu quả nhất:
 - Giới hạn còn lại:
-- Cách phân công và tích hợp:
+- Cách phân công và tích hợp: mỗi người sở hữu một nhóm mục trong `starter_v0/artifacts/REPORT.md`, chỉ sửa mục của mình rồi `git pull --rebase` trước khi push.
+
+| Mục REPORT | Người điền |
+|---|---|
+| Header (lĩnh vực, luồng cơ bản, đường dẫn bộ case), Team/provider/model | Duy |
+| A1 capability, A2 bảng tool, A4 kịch bản demo | Khang (A2 phần tool có sẵn: Duy) |
+| A3 câu hỏi mẫu | Thành |
+| B1 version evidence, B2 failure analysis, B7 technical reflection | Duy |
+| B3 team eval cases | Thành |
+| B4 live chat evidence | Khang |
+| B4a adversarial evidence, B6 safety review | Duyên |
+| B5 optional và bonus tool evidence | Khang |
+| C1 nhận xét chung, C3 final checkout | Duy |
+| C2 INDIVIDUAL | mỗi người tự viết mục của mình |
 
 ## INDIVIDUAL
 
