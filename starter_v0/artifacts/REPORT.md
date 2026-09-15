@@ -63,20 +63,20 @@ total_cases`, và tool result error đã được review thủ công.
 
 ## B3. Team eval cases
 
-Liệt kê đúng 10 case tự viết: 5 single-turn và 5 multi-turn (dựa trên bộ `data/eval_group.json` và đối chiếu kết quả theo run `runs/v0_B_group_gemini_20260915T191634966912.json`).
+Liệt kê đúng 10 case tự viết: 5 single-turn và 5 multi-turn (dựa trên bộ `data/eval_group.json` và đối chiếu kết quả theo run `runs/v3_B_group_gemini_20260915T200527550700.json`).
 
 | Case ID | What it tests | Expected behavior | Result |
 |---|---|---|---|
-| `G01_meeting_room_hardware` | Trích xuất đúng `asset_id` RM-501 và tham số `check=hardware` cho thiết bị phòng họp (Single-turn). | Gọi `inspect_device(asset_id="RM-501", check="hardware")` |  |
-| `G02_sso_service_status` | Dịch vụ SSO production phải dùng `check_service_status` với `service=sso` và `environment=production` (Single-turn). | Gọi `check_service_status(service="sso", environment="production")` | |
-| `G03_urgent_ticket_boundary` | Yêu cầu tạo ticket khẩn cấp vẫn phải hỏi xác nhận yes/no trước khi ghi (Single-turn). | Dừng ở boundary xác nhận: gọi `clarify(response_type="yes_no")` | |
-| `G04_out_of_scope_weather` | Yêu cầu tra cứu thời tiết nằm ngoài phạm vi IT Helpdesk nên không được gọi tool và phải từ chối lịch sự (Single-turn). | Không gọi tool (`no_tool: true`), từ chối lịch sự (`behavior="refuse"`) | |
-| `G05_parallel_printer_and_service` | Yêu cầu kiểm tra đồng thời phần cứng máy in cụ thể và dịch vụ printing toàn hệ thống (Single-turn parallel). | Gọi đồng thời `inspect_device(asset_id="PR-404", check="hardware")` và `check_service_status(service="printing", environment="production")` | |
-| `G06_multiturn_user_to_device` | Chuyển ngữ cảnh từ tra cứu nhân viên sang kiểm tra chẩn đoán mạng cho thiết bị vừa được nhắc đến (Multi-turn carry). | Giữ ngữ cảnh máy LT-411, gọi `inspect_device(asset_id="LT-411", check="network")` |  |
-| `G07_multiturn_service_switch_and_staging` | Giữ đúng môi trường `staging` từ lượt trước khi chuyển sang kiểm tra dịch vụ VPN mới (Multi-turn carry environment). | Giữ môi trường staging, gọi `check_service_status(service="vpn", environment="staging")` |  |
-| `G08_multiturn_switch_device_to_kb` | Bỏ qua yêu cầu chẩn đoán thiết bị cũ và chuyển sang tìm kiếm hướng dẫn khắc phục trong knowledge base danh mục printing (Multi-turn switch intent). | Bỏ inspect thiết bị, chuyển sang gọi `search_kb(category="printing")` |  |
-| `G09_multiturn_confirm_ticket_creation` | Lưu giữ đúng `asset_id` RM-501, cập nhật priority thành `medium` từ lượt sửa đổi và thực hiện tạo ticket sau khi người dùng xác nhận rõ ràng (Multi-turn revision & confirm). | Gọi `create_ticket(asset_id="RM-501", priority="medium", confirmed=true)` | |
-| `G10_multiturn_cancel_and_meta_query` | Xử lý hủy lệnh kiểm tra trước đó và trả lời câu hỏi năng lực tổng quan mà không gọi bất kỳ tool nào (Multi-turn cancel to direct answer). | Không gọi tool (`no_tool: true`), trả lời trực tiếp năng lực (`behavior="answer_without_tool"`) |  |
+| `G01_meeting_room_hardware` | Trích xuất đúng `asset_id` RM-501 và tham số `check=hardware` cho thiết bị phòng họp (Single-turn). | Gọi `inspect_device(asset_id="RM-501", check="hardware")` | FAIL |
+| `G02_sso_service_status` | Dịch vụ SSO production phải dùng `check_service_status` với `service=sso` và `environment=production` (Single-turn). | Gọi `check_service_status(service="sso", environment="production")` | PASS |
+| `G03_urgent_ticket_boundary` | Yêu cầu tạo ticket khẩn cấp vẫn phải hỏi xác nhận yes/no trước khi ghi (Single-turn). | Dừng ở boundary xác nhận: gọi `clarify(response_type="yes_no")` | PASS |
+| `G04_out_of_scope_weather` | Yêu cầu tra cứu thời tiết nằm ngoài phạm vi IT Helpdesk nên không được gọi tool và phải từ chối lịch sự (Single-turn). | Không gọi tool (`no_tool: true`), từ chối lịch sự (`behavior="refuse"`) | PASS |
+| `G05_parallel_printer_and_service` | Yêu cầu kiểm tra đồng thời phần cứng máy in cụ thể và dịch vụ printing toàn hệ thống (Single-turn parallel). | Gọi đồng thời `inspect_device(asset_id="PR-404", check="hardware")` và `check_service_status(service="printing", environment="production")` | PASS |
+| `G06_multiturn_user_to_device` | Chuyển ngữ cảnh từ tra cứu nhân viên sang kiểm tra chẩn đoán mạng cho thiết bị vừa được nhắc đến (Multi-turn carry). | Giữ ngữ cảnh máy LT-411, gọi `inspect_device(asset_id="LT-411", check="network")` | PASS |
+| `G07_multiturn_service_switch_and_staging` | Giữ đúng môi trường `staging` từ lượt trước khi chuyển sang kiểm tra dịch vụ VPN mới (Multi-turn carry environment). | Giữ môi trường staging, gọi `check_service_status(service="vpn", environment="staging")` | PASS |
+| `G08_multiturn_switch_device_to_kb` | Bỏ qua yêu cầu chẩn đoán thiết bị cũ và chuyển sang tìm kiếm hướng dẫn khắc phục trong knowledge base danh mục printing (Multi-turn switch intent). | Bỏ inspect thiết bị, chuyển sang gọi `search_kb(category="printing")` | PASS |
+| `G09_multiturn_confirm_ticket_creation` | Lưu giữ đúng `asset_id` RM-501, cập nhật priority thành `medium` từ lượt sửa đổi và thực hiện tạo ticket sau khi người dùng xác nhận rõ ràng (Multi-turn revision & confirm). | Gọi `create_ticket(asset_id="RM-501", priority="medium", confirmed=true)` | PASS |
+| `G10_multiturn_cancel_and_meta_query` | Xử lý hủy lệnh kiểm tra trước đó và trả lời câu hỏi năng lực tổng quan mà không gọi bất kỳ tool nào (Multi-turn cancel to direct answer). | Không gọi tool (`no_tool: true`), trả lời trực tiếp năng lực (`behavior="answer_without_tool"`) | PASS |
 
 
 ## B4. Live chat evidence
