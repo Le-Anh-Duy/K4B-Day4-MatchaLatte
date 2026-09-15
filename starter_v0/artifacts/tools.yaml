@@ -8,14 +8,14 @@
 tools:
   # ---------------- Core tools ----------------
   - name: clarify
-    description: "Gửi một câu hỏi cho người dùng."
+    description: "Gửi một câu hỏi cho người dùng. Luôn nêu response_type."
     parameters:
       type: object
       properties:
         question: {type: string, default: "", description: "Câu hỏi"}
-        response_type: {type: string, enum: [text, yes_no, choice], default: "text", description: "Kiểu trả lời"}
-        options: {type: array, default: [], items: {type: string}, description: "Các lựa chọn"}
-      required: [question]
+        response_type: {type: string, enum: [text, yes_no, choice], default: "text", description: "Kiểu trả lời mong đợi. yes_no khi hỏi người dùng đồng ý hay không, kể cả xác nhận trước khi ghi dữ liệu; đừng diễn đạt câu hỏi đồng ý/không thành hai lựa chọn. choice khi câu trả lời phải là một giá trị trong tập hợp đóng đã biết, liệt kê đúng các giá trị đó ở options. text khi người dùng phải tự cung cấp thông tin như mã tài sản hoặc mã nhân viên."}
+        options: {type: array, default: [], items: {type: string}, description: "Các lựa chọn, chỉ dùng với response_type choice. Mỗi phần tử là một giá trị hợp lệ của tham số đang thiếu, viết đúng như tham số đó nhận, không thêm chữ mô tả."}
+      required: [question, response_type]
 
   - name: search_kb
     description: "Tìm hướng dẫn hỗ trợ kỹ thuật."
@@ -33,7 +33,7 @@ tools:
       type: object
       properties:
         service: {type: string, enum: [vpn, email, sso, wifi, printing], description: "Tên dịch vụ"}
-        environment: {type: string, enum: [production, staging], default: "production", description: "Môi trường"}
+        environment: {type: string, enum: [production, staging], default: "production", description: "Môi trường, chỉ điền khi người dùng nói rõ production hay staging. Tên môi trường khác hoặc cách gọi nội bộ không suy ra được giá trị nào ở đây; khi đó hỏi lại người dùng thay vì chọn giúp."}
       required: [service]
 
   - name: inspect_device
