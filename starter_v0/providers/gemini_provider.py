@@ -110,7 +110,7 @@ class GeminiProvider:
 
         client = genai.Client(api_key=api_key)
         # ponytail: retry 429s using the API's own retryDelay, falling back to fixed backoff.
-        for attempt in range(5):
+        for attempt in range(8):
             try:
                 resp = client.models.generate_content(
                     model=model or self.default_model,
@@ -120,11 +120,11 @@ class GeminiProvider:
                 break
             except Exception as exc:
                 message = str(exc)
-                if attempt == 4 or not ("429" in message or "RESOURCE_EXHAUSTED" in message):
+                if attempt == 7 or not ("429" in message or "RESOURCE_EXHAUSTED" in message):
                     raise
                 suggested = re.search(r"retryDelay['\"]?[:=]\s*['\"]?(\d+)", message)
-                delay = int(suggested.group(1)) + 1 if suggested else 15 * (attempt + 1)
-                print(f"[rate-limit] retry {attempt + 1}/4 after {delay}s", file=sys.stderr, flush=True)
+                delay = int(suggested.group(1)) + 1 if suggested else min(15 * (attempt + 1), 60)
+                print(f"[rate-limit] retry {attempt + 1}/7 after {delay}s", file=sys.stderr, flush=True)
                 time.sleep(delay)
 
         text_parts: list[str] = []

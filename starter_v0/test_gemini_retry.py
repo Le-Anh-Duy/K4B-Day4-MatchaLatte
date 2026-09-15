@@ -74,21 +74,21 @@ def main() -> None:
         raise AssertionError("non-429 error must propagate, not be retried")
     assert seen["calls"] == 1, f"non-429 must not retry, got {seen['calls']} calls"
 
-    seen = install_fake_genai([rate_limit_error() for _ in range(6)])
+    seen = install_fake_genai([rate_limit_error() for _ in range(9)])
     try:
         complete(provider)
     except RuntimeError:
         pass
     else:
         raise AssertionError("persistent 429 must eventually raise")
-    assert seen["calls"] == 5, f"expected 5 attempts before giving up, got {seen['calls']}"
+    assert seen["calls"] == 8, f"expected 8 attempts before giving up, got {seen['calls']}"
 
     slept.clear()
     install_fake_genai([rate_limit_error(retry_delay=7)])
     complete(provider)
     assert slept == [8], f"expected the API retryDelay of 7s plus 1s margin, slept {slept}"
 
-    print("ok: retries 429, honours retryDelay, propagates other errors, gives up after 5 attempts")
+    print("ok: retries 429, honours retryDelay, propagates other errors, gives up after 8 attempts")
 
 
 if __name__ == "__main__":
