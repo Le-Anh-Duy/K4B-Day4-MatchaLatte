@@ -22,6 +22,7 @@ from .unlock_user_account.tool import unlock_user_account
 # unchanged in tools.yaml, this registry and the supplied datasets. Improve
 # descriptions and compatible schemas. Register any team-built bonus tool in
 # this registry and tools.yaml, then test it with team-authored cases.
+#tool moi
 TOOL_FUNCTIONS = {
     "clarify": ask_user,
     "search_kb": search_kb,
@@ -50,3 +51,4 @@ def to_openai_tools(declarations: list[dict[str, Any]]) -> list[dict[str, Any]]:
             "parameters": item.get("parameters", {"type": "object", "properties": {}}),
         },
     } for item in declarations]
+
