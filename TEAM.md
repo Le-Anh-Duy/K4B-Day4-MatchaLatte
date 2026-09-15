@@ -16,8 +16,8 @@
 |---|---|---|---|---|
 | Lê Anh Duy| 2A202602723 | Le-Anh-Duy | Owner artifacts: `system_prompt.md`, `tools.yaml`; chạy v0→v3 base, `version_log.csv`, phần B1/B2/B7 của report | |
 | Lê Quang Thành | 2A202602647 | AIVIETNAM-AIO-tlee | Viết 10 case nhóm `data/eval_group.json` (5 single + 5 multi), chạy suite group trên v0 và v3, phân tích B3 | |
-| Nguyễn Thị Phương Duyên | 2A202603001 |  | Chạy 12 case adversarial, phân tích ≥3 case, transcript thiếu thông tin/xác nhận/hủy, phần B4a/B6 | |
-| Đào Trọng Khang| 2A202602974 |khangdaotr | UI chat (hiện tool, input, result/error, version), transcript demo, tool mở rộng bonus, ráp `REPORT.md` phần A/B4/B5 | |
+| Nguyễn Thị Phương Duyên | 2A202603001 | dyu-dyu | Chạy 12 case adversarial, phân tích ≥3 case, transcript thiếu thông tin/xác nhận/hủy, phần B4a/B6 | |
+| Đào Trọng Khang| 2A202602974 | khangdaotr | UI chat (hiện tool, input, result/error, version), transcript demo, tool mở rộng bonus, ráp `REPORT.md` phần A/B4/B5 | |
 
 ## Nhận xét chung
 
