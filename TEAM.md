@@ -41,11 +41,36 @@
 
 ## INDIVIDUAL
 
-Sao chép mục này cho từng thành viên.
+Mỗi người tự viết mục của mình. Dòng "Phần việc và file/commit/PR" đã được dựng
+sẵn từ lịch sử git; các mục còn lại phải do chính người đó viết.
 
-### Họ và tên — MSSV
+### Lê Anh Duy — 2A202602723
 
-- Phần việc và file/commit/PR:
+- Phần việc và file/commit/PR: sở hữu vòng lặp version. `artifacts/system_prompt.md` v1 (`9481e9d`) và v2 (`43be082`), `artifacts/tools.yaml` v3 (`7594b81`), chạy base v1/v2/v3 và ghi `artifacts/version_log.csv` (`bce40ef`, `43be082`, `de5262f`). Xử lý rate limit và mất dữ liệu run ở tầng thực thi: retry 429 trong `providers/gemini_provider.py` (`a19a021`, `fdb2f91`, kèm `test_gemini_retry.py`), ghi run file sau từng case và cờ `--request-interval` trong `run_eval.py` (`96f605a`, `05cc26d`). Hiện kết quả/lỗi tool trong `chat.py` (`e2be7c1`). Chạy adversarial v3 (`eb890dd`), điền `artifacts/REPORT.md` phần header, B1–B4a, B6, B7 (`53e172d`). Đo lại toàn bộ trên registry có tool bonus: v4 base (`ea954c9`), v4 group và adversarial (`e6fbcae`).
+- Quyết định, khó khăn và cách xử lý:
+- Điều đã học:
+- AI/công cụ đã dùng và cách kiểm tra:
+- Thời điểm đã tự nộp URL repo chung trên VLearn:
+
+### Lê Quang Thành — 2A202602647
+
+- Phần việc và file/commit/PR: viết bộ 10 case nhóm `data/eval_group.json`, đúng 5 single-turn và 5 multi-turn (`26aabac`). Chạy suite group ở v0 (`b66f61a`) và ở v3 (`7a543bc`). Viết mục B3 trong `artifacts/REPORT.md`: mô tả từng case và kỳ vọng (`c3fb994`), sau đó bổ sung cột kết quả (`3c3bac2`). Khai báo GitHub username trong `TEAM.md` (`4283345`).
+- Quyết định, khó khăn và cách xử lý:
+- Điều đã học:
+- AI/công cụ đã dùng và cách kiểm tra:
+- Thời điểm đã tự nộp URL repo chung trên VLearn:
+
+### Nguyễn Thị Phương Duyên — 2A202603001
+
+- Phần việc và file/commit/PR: chạy baseline base 30 case ở v0, tức mốc so sánh của toàn bộ bài (`d6e74dc`). Chạy bộ adversarial 12 case ở v0 (`a84de1d`) và ở v3 (`449ca7c`). Ghi phần B1 cho v0 và v1 trong `artifacts/REPORT.md` (`a84de1d`, `b9d8946`). Khai báo GitHub username trong `TEAM.md` (`a79dbb4`).
+- Quyết định, khó khăn và cách xử lý:
+- Điều đã học:
+- AI/công cụ đã dùng và cách kiểm tra:
+- Thời điểm đã tự nộp URL repo chung trên VLearn:
+
+### Đào Trọng Khang — 2A202602974
+
+- Phần việc và file/commit/PR: xây web UI cho agent gồm `ui_server.py`, `ui/index.html`, `ui/app.js`, `ui/styles.css`, `app.py` và `start_ui.bat` (`a65cdbd`, `a7c6673`); UI hiện tool name, input, kết quả hoặc lỗi, và `artifact_version` của phiên. Xây hai tool mở rộng `tools/check_software_license/` và `tools/unlock_user_account/` kèm dữ liệu giả lập, đăng ký trong `tools/__init__.py` và khai báo trong `artifacts/tools.yaml`, có `test_bonus_tools.py` phủ các nhánh lỗi và nhánh cần xác nhận (`a65cdbd`, `27d7a78`). Sinh transcript hội thoại trong `transcripts/`.
 - Quyết định, khó khăn và cách xử lý:
 - Điều đã học:
 - AI/công cụ đã dùng và cách kiểm tra:
