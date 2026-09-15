@@ -1,3 +1,3 @@
 version,author,changed_artifact,artifact_version,prompt_hash,tools_hash,reason,hypothesis,metric_name,metric_before,metric_after,run_file
-v0,Thanh,baseline,v0+p27467914bc4d+td4848549884e,27467914bc4d,d4848549884e,Chay starter chua sua artifact,Do hanh vi goc truoc khi sua,case_accuracy,,0.7333,runs/v0_B_base_gemini_20260915T192022433394.json
+v0,Duyen,baseline,v0+p27467914bc4d+td4848549884e,27467914bc4d,d4848549884e,Chay starter chua sua artifact,Do hanh vi goc truoc khi sua,case_accuracy,,0.7333,runs/v0_B_base_gemini_20260915T192022433394.json
 v1,Duy,system_prompt.md,v1+p4672b25cf3ad+td4848549884e,4672b25cf3ad,d4848549884e,"Tach hanh dong khoi cau tra loi: tool call truoc, JSON sau khi co ket qua",Muc Output format yeu cau tra JSON dang canh tranh voi tool calling nen agent mo ta hanh dong bang van ban thay vi goi tool; tach hai viec se giam missing_tool_call,case_accuracy,0.7333,0.8,runs/v1_B_base_gemini_20260915T193546277442.json
