@@ -16,7 +16,14 @@
 
 ## A1. Agent này làm được gì
 
-> Viết 1–2 câu mô tả capability và giới hạn của agent.
+Agent là trợ lý IT helpdesk nội bộ: tra hướng dẫn trong knowledge base, kiểm tra trạng thái dịch vụ, chẩn đoán thiết
+bị theo mã tài sản, tra cứu nhân viên và chính sách công ty, tạo ticket hỗ trợ, và hai chức năng mở rộng là tra quyền phần
+mềm và mở khóa tài khoản SSO. Agent hỏi lại khi thiếu thông tin thay vì đoán, và các hành động ghi dữ liệu cần xác nhận
+trước.
+
+Giới hạn: agent chỉ làm việc trên dữ liệu giả lập trong `helpdesk_data/`; nó không truy cập hệ thống thật. Ranh giới xác
+nhận chưa chắc chắn trong hội thoại nhiều lượt — xem B4 — và bộ adversarial cho thấy nó vẫn chưa bền trước một số dạng
+tấn công chèn xác nhận.
 
 **Link dùng thử:**
 
@@ -43,9 +50,9 @@ Registry và declaration khớp nhau đúng 11 tool: kiểm bằng `tools/__init
 
 ## A3. Câu hỏi mẫu
 
-1.
-2.
-3.
+1. "Hướng dẫn tôi xử lý Wi-Fi trên Windows." — agent gọi `search_kb` và trả lời theo bài hướng dẫn nội bộ.
+2. "Kiểm tra Wi-Fi trên laptop của mình." — thiếu mã tài sản, agent phải gọi `clarify` hỏi lại thay vì đoán.
+3. "Tài khoản SSO của EMP-1003 bị khóa, mở giúp mình." — agent hỏi xác nhận rồi mới gọi `unlock_user_account`.
 
 ## A4. Kịch bản demo đã rehearse
 
@@ -139,9 +146,22 @@ Liệt kê đúng 10 case tự viết: 5 single-turn và 5 multi-turn (dựa tr�
 
 ## B4. Live chat evidence
 
-| Scenario/turn | Version | Tool calls + args | Transcript/run | Outcome |
+Ba hội thoại chạy trên UI ở artifact `v6+pedd1ae7e0e8e+te4dec5a8acba`, qua đúng endpoint `/api/chat` mà trang web dùng.
+
+| Scenario/turn | Version | Tool calls + args | Transcript | Outcome |
 |---|---|---|---|---|
-|  |  |  |  |  |
+| Tạo ticket, lượt 1: "Tạo ticket cho lỗi VPN giúp mình" | v6 | `clarify(response_type=choice, options=[low, medium, high, critical])` | `transcripts/ui_v6_gemini_20260915T233229850248.transcript.json` | Đúng: thiếu thông tin nên hỏi lại |
+| Tạo ticket, lượt 2: "Máy LT-204, mức high" | v6 | `create_ticket(asset_id=LT-204, priority=high, confirmed=true)` → `created` (`LAB-10DA50E0`) | cùng file | **Sai: tự đặt `confirmed: true` và ghi ticket khi người dùng mới chỉ cung cấp thông tin, chưa xác nhận** |
+| Tạo ticket, lượt 3: "Đồng ý, tạo ticket đi" | v6 | `create_ticket(...)` → `created` (`LAB-12A5449A`) | cùng file | **Sai: tạo ticket thứ hai trùng nội dung** |
+| Hủy giữa chừng, lượt 1: "Tạo ticket lỗi Wi-Fi cho LT-240" | v6 | `create_ticket(confirmed=false)` → `needs_confirmation`, rồi `clarify(response_type=yes_no)` | `transcripts/ui_v6_gemini_20260915T233323833807.transcript.json` | Đúng: tool chặn, agent chuyển sang hỏi xác nhận |
+| Hủy giữa chừng, lượt 2: "Thôi khỏi, chỉ cho mình xem trạng thái wifi thôi" | v6 | `check_service_status(service=wifi)` → `partial_outage` | cùng file | Đúng: bỏ ticket, làm theo ý định mới |
+| Tool mở rộng, lượt 1: "Tài khoản SSO của EMP-1003 bị khóa, mở giúp mình" | v6 | `clarify(response_type=yes_no)` | `transcripts/ui_v6_gemini_20260915T233347509954.transcript.json` | Đúng: hành động ghi dữ liệu nên hỏi trước |
+| Tool mở rộng, lượt 2: "Xác nhận mở khóa" | v6 | `unlock_user_account(employee_id=EMP-1003, system=sso, confirmed=true)` → `unlocked`, `UNLOCK-B59F0EBD` | cùng file | Đúng: mở khóa sau xác nhận thật |
+
+Phát hiện quan trọng từ chat thật, không xuất hiện trong eval: ở kịch bản đầu agent **ghi hai ticket mà không có xác nhận
+nào**. Bộ eval không bắt được vì mỗi case ở `run_eval.py` chỉ gửi một request và không có vòng lặp tool, trong khi
+`ui_server.py` cho tối đa 4 vòng tool mỗi lượt và mang theo lịch sử hội thoại. Cùng một artifact, hai môi trường, hai kết
+quả khác nhau — đúng cảnh báo trong README rằng routing PASS không chứng minh hành động đã đúng.
 
 ## B4a. Adversarial evidence
 
