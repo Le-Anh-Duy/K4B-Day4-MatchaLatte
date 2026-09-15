@@ -1,7 +1,302 @@
 {
   "dataset_id": "day04_v3_helpdesk_group",
   "dataset_role": "group",
-  "description": "Template intentionally left empty. The team must write exactly 10 original IT helpdesk cases: 5 single-turn query cases and 5 multi-turn turns cases.",
-  "allowed_failure_types": ["wrong_tool", "wrong_arg_value", "wrong_boundary", "unnecessary_tool", "out_of_scope", "missing_info"],
-  "cases": []
+  "description": "Evaluation dataset authored by the team for IT helpdesk agent: 5 single-turn query cases and 5 multi-turn turns cases.",
+  "allowed_failure_types": [
+    "wrong_tool",
+    "wrong_arg_value",
+    "wrong_boundary",
+    "unnecessary_tool",
+    "out_of_scope",
+    "missing_info"
+  ],
+  "cases": [
+    {
+      "id": "G01_meeting_room_hardware",
+      "phase": "B",
+      "suite": "group",
+      "query": "Kiểm tra phần cứng của thiết bị phòng họp RM-501 giúp tôi.",
+      "failure_type": "wrong_arg_value",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "inspect_device",
+            "args": {
+              "asset_id": "RM-501",
+              "check": "hardware"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "skill": "inspect_meeting_room_hardware",
+        "difficulty": "medium",
+        "what_it_tests": "Trích xuất đúng asset_id RM-501 và tham số check hardware cho thiết bị phòng họp."
+      }
+    },
+    {
+      "id": "G02_sso_service_status",
+      "phase": "B",
+      "suite": "group",
+      "query": "Hệ thống đăng nhập tập trung SSO production hiện có hoạt động bình thường không?",
+      "failure_type": "wrong_tool",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "check_service_status",
+            "args": {
+              "service": "sso",
+              "environment": "production"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "skill": "sso_status_check",
+        "difficulty": "easy",
+        "what_it_tests": "Dịch vụ SSO production phải dùng check_service_status với service=sso và environment=production."
+      }
+    },
+    {
+      "id": "G03_urgent_ticket_boundary",
+      "phase": "B",
+      "suite": "group",
+      "query": "Tạo ngay một ticket khẩn cấp mức critical báo sự cố hệ thống email ngừng hoạt động.",
+      "failure_type": "wrong_boundary",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "clarify",
+            "args": {
+              "response_type": "yes_no"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "skill": "ticket_creation_boundary",
+        "difficulty": "medium",
+        "what_it_tests": "Yêu cầu tạo ticket khẩn cấp vẫn phải hỏi xác nhận yes/no trước khi ghi."
+      }
+    },
+    {
+      "id": "G04_out_of_scope_weather",
+      "phase": "B",
+      "suite": "group",
+      "query": "Xem giúp tôi dự báo thời tiết tại Hà Nội ngày mai và cuối tuần này thế nào.",
+      "failure_type": "out_of_scope",
+      "expect": {
+        "no_tool": true,
+        "behavior": "refuse"
+      },
+      "metadata": {
+        "skill": "out_of_scope_weather",
+        "difficulty": "easy",
+        "what_it_tests": "Yêu cầu tra cứu thời tiết nằm ngoài phạm vi IT Helpdesk nên không được gọi tool và phải từ chối lịch sự."
+      }
+    },
+    {
+      "id": "G05_parallel_printer_and_service",
+      "phase": "B",
+      "suite": "group",
+      "query": "Máy in PR-404 đang không hoạt động; kiểm tra phần cứng máy in đó và kiểm tra trạng thái dịch vụ printing production.",
+      "failure_type": "wrong_tool",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "inspect_device",
+            "args": {
+              "asset_id": "PR-404",
+              "check": "hardware"
+            }
+          },
+          {
+            "name": "check_service_status",
+            "args": {
+              "service": "printing",
+              "environment": "production"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "skill": "parallel_device_and_service",
+        "difficulty": "hard",
+        "what_it_tests": "Yêu cầu kiểm tra đồng thời phần cứng máy in cụ thể và dịch vụ printing toàn hệ thống."
+      }
+    },
+    {
+      "id": "G06_multiturn_user_to_device",
+      "phase": "B",
+      "suite": "group",
+      "turns": [
+        {
+          "role": "user",
+          "content": "Tra cứu thông tin tài khoản nhân viên EMP-1006."
+        },
+        {
+          "role": "user",
+          "content": "Thiết bị được cấp cho nhân viên này là máy nào vậy?"
+        },
+        {
+          "role": "user",
+          "content": "Hãy kiểm tra network của chiếc laptop LT-411 đó giúp mình."
+        }
+      ],
+      "failure_type": "wrong_tool",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "inspect_device",
+            "args": {
+              "asset_id": "LT-411",
+              "check": "network"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "skill": "multiturn_user_to_device_inspection",
+        "difficulty": "hard",
+        "what_it_tests": "Chuyển ngữ cảnh từ tra cứu nhân viên sang kiểm tra chẩn đoán mạng cho thiết bị vừa được nhắc đến."
+      }
+    },
+    {
+      "id": "G07_multiturn_service_switch_and_staging",
+      "phase": "B",
+      "suite": "group",
+      "turns": [
+        {
+          "role": "user",
+          "content": "Kiểm tra trạng thái dịch vụ SSO trên production."
+        },
+        {
+          "role": "user",
+          "content": "Còn SSO trên môi trường staging thì tình trạng thế nào?"
+        },
+        {
+          "role": "user",
+          "content": "Tiện thể kiểm tra luôn dịch vụ VPN, cũng trên môi trường staging đó nhé."
+        }
+      ],
+      "failure_type": "wrong_arg_value",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "check_service_status",
+            "args": {
+              "service": "vpn",
+              "environment": "staging"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "skill": "multiturn_carry_environment_service_switch",
+        "difficulty": "hard",
+        "what_it_tests": "Giữ đúng môi trường staging từ lượt trước khi chuyển sang kiểm tra dịch vụ VPN mới."
+      }
+    },
+    {
+      "id": "G08_multiturn_switch_device_to_kb",
+      "phase": "B",
+      "suite": "group",
+      "turns": [
+        {
+          "role": "user",
+          "content": "Máy in PR-404 ở tầng 4 đang báo lỗi offline và kẹt lệnh in."
+        },
+        {
+          "role": "user",
+          "content": "Đừng kiểm tra thông tin máy in PR-404 nữa."
+        },
+        {
+          "role": "user",
+          "content": "Tìm giúp tôi tài liệu hướng dẫn trong KB về cách khắc phục lỗi in ấn category printing."
+        }
+      ],
+      "failure_type": "wrong_tool",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "search_kb",
+            "args": {
+              "category": "printing"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "skill": "multiturn_switch_device_to_kb",
+        "difficulty": "hard",
+        "what_it_tests": "Bỏ qua yêu cầu chẩn đoán thiết bị cũ và chuyển sang tìm kiếm hướng dẫn khắc phục trong knowledge base danh mục printing."
+      }
+    },
+    {
+      "id": "G09_multiturn_confirm_ticket_creation",
+      "phase": "B",
+      "suite": "group",
+      "turns": [
+        {
+          "role": "user",
+          "content": "Soạn ticket báo hỏng microphone của thiết bị phòng họp RM-501 với mức ưu tiên low."
+        },
+        {
+          "role": "user",
+          "content": "Đổi mức ưu tiên của ticket thành medium giúp tôi vì sắp có cuộc họp quan trọng."
+        },
+        {
+          "role": "user",
+          "content": "Mọi thông tin đã chính xác, tôi xác nhận tạo ticket này."
+        }
+      ],
+      "failure_type": "wrong_boundary",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "create_ticket",
+            "args": {
+              "asset_id": "RM-501",
+              "priority": "medium",
+              "confirmed": true
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "skill": "multiturn_ticket_revision_and_confirmation",
+        "difficulty": "hard",
+        "what_it_tests": "Lưu giữ đúng asset_id RM-501, cập nhật priority thành medium từ lượt sửa đổi và thực hiện tạo ticket sau khi người dùng xác nhận rõ ràng."
+      }
+    },
+    {
+      "id": "G10_multiturn_cancel_and_meta_query",
+      "phase": "B",
+      "suite": "group",
+      "turns": [
+        {
+          "role": "user",
+          "content": "Kiểm tra chẩn đoán toàn diện cho máy tính để bàn DT-087."
+        },
+        {
+          "role": "user",
+          "content": "Khoan đã, người dùng đó đang bận họp nên dừng việc kiểm tra lại."
+        },
+        {
+          "role": "user",
+          "content": "Cho tôi biết bạn là ai và có thể hỗ trợ những công việc IT nào trong công ty?"
+        }
+      ],
+      "failure_type": "unnecessary_tool",
+      "expect": {
+        "no_tool": true,
+        "behavior": "answer_without_tool"
+      },
+      "metadata": {
+        "skill": "multiturn_cancel_to_meta_direct_answer",
+        "difficulty": "hard",
+        "what_it_tests": "Xử lý hủy lệnh kiểm tra trước đó và trả lời câu hỏi năng lực tổng quan mà không gọi bất kỳ tool nào."
+      }
+    }
+  ]
 }
